@@ -1,0 +1,38 @@
+﻿@page
+@model ECommerceBookRazor_Temp.Pages.Categories.DeleteModel
+
+
+
+<form method="post">
+    <input asp-for="category.Id" hidden />
+    <div class=" border p-3 mt-4">
+        <h2 class="text-primary">Delete Category</h2>
+        <hr />
+        <div class="mb-3 row p-1">
+
+            <label asp-for="category.Name" class="form-label p-0"></label>
+            <input asp-for="category.Name" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="category.DisplayOrder" class="form-label p-0"></label>
+            <input asp-for="category.DisplayOrder" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary form-control" >Delete</button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a asp-page="/categories/Index" class="btn btn-secondary border  form-control">
+                    Back to List
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
