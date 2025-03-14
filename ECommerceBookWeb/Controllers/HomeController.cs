@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using ECommerceBookWeb.Models;
+using ECommerceBook.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceBookWeb.Controllers

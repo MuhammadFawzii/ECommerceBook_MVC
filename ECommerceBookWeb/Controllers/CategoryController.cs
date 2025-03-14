@@ -1,5 +1,5 @@
-﻿using ECommerceBookWeb.Data;
-using ECommerceBookWeb.Models;
+﻿using ECommerceBook.DataAcess.Data;
+using ECommerceBook.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceBookWeb.Controllers
