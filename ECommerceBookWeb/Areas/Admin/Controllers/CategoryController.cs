@@ -2,18 +2,19 @@
 using ECommerceBook.Models;
 using Microsoft.AspNetCore.Mvc;
 using ECommerceBook.DataAccess.Repository.IRepository;
-namespace ECommerceBookWeb.Controllers
+namespace ECommerceBookWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
         public CategoryController(IUnitOfWork _unitOfWork)
         {
-            this.unitOfWork = _unitOfWork;
+            unitOfWork = _unitOfWork;
         }
         public IActionResult Index()
         {
-            IEnumerable<Category> categoriesList= unitOfWork.CategoryRepository.GetAll();
+            IEnumerable<Category> categoriesList = unitOfWork.CategoryRepository.GetAll();
             return View(categoriesList);
         }
         public IActionResult Create()
@@ -21,28 +22,32 @@ namespace ECommerceBookWeb.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Category category) {
+        public IActionResult Create(Category category)
+        {
             //Custom Validation Message
-            if (category.Name==category.DisplayOrder.ToString()) {
+            if (category.Name == category.DisplayOrder.ToString())
+            {
                 ModelState.AddModelError("", "the Display Order can't exactly match the Name.");
                 //ModelState.AddModelError("Name", "the Display Order can't exactly match the Name.");
 
             }
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 unitOfWork.CategoryRepository.Add(category);
                 unitOfWork.Save();
-                TempData["success"]= "Category Created successfully";
+                TempData["success"] = "Category Created successfully";
                 return RedirectToAction("Index");
             }
             return View();
         }
-        public IActionResult Edit(int?id)
+        public IActionResult Edit(int? id)
         {
-            if (id == null||id==0) { 
+            if (id == null || id == 0)
+            {
                 return NotFound();
-           
+
             }
-            Category? category = unitOfWork.CategoryRepository.Get(c=>c.Id==id);
+            Category? category = unitOfWork.CategoryRepository.Get(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -86,8 +91,8 @@ namespace ECommerceBookWeb.Controllers
             }
             return View(category);
         }
-        [HttpPost,ActionName("Delete")]
-        public IActionResult DeletePOST(int?id)
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePOST(int? id)
         {
             Category? category = unitOfWork.CategoryRepository.Get(c => c.Id == id);
             if (category == null)
@@ -99,7 +104,7 @@ namespace ECommerceBookWeb.Controllers
             TempData["success"] = "Category Deleted successfully";
 
             return RedirectToAction("Index");
-           
+
 
 
         }
