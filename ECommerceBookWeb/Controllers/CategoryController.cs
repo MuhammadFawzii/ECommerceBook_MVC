@@ -1,19 +1,19 @@
 ﻿using ECommerceBook.DataAcess.Data;
 using ECommerceBook.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using ECommerceBook.DataAccess.Repository.IRepository;
 namespace ECommerceBookWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db)
+        private readonly IUnitOfWork unitOfWork;
+        public CategoryController(IUnitOfWork _unitOfWork)
         {
-            _db = db;
+            this.unitOfWork = _unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Category> categoriesList=_db.Categories.ToList();
+            IEnumerable<Category> categoriesList= unitOfWork.CategoryRepository.GetAll();
             return View(categoriesList);
         }
         public IActionResult Create()
@@ -29,15 +29,12 @@ namespace ECommerceBookWeb.Controllers
 
             }
             if (ModelState.IsValid) {
-                _db.Categories.Add(category);
-                _db.SaveChanges();
+                unitOfWork.CategoryRepository.Add(category);
+                unitOfWork.Save();
                 TempData["success"]= "Category Created successfully";
                 return RedirectToAction("Index");
             }
             return View();
-            
-
-        
         }
         public IActionResult Edit(int?id)
         {
@@ -45,7 +42,7 @@ namespace ECommerceBookWeb.Controllers
                 return NotFound();
            
             }
-            Category? category = _db.Categories.Find(id);
+            Category? category = unitOfWork.CategoryRepository.Get(c=>c.Id==id);
             if (category == null)
             {
                 return NotFound();
@@ -64,8 +61,8 @@ namespace ECommerceBookWeb.Controllers
             }
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(category);
-                _db.SaveChanges();
+                unitOfWork.CategoryRepository.Update(category);
+                unitOfWork.Save();
                 TempData["success"] = "Category Updated successfully";
 
                 return RedirectToAction("Index");
@@ -82,7 +79,7 @@ namespace ECommerceBookWeb.Controllers
                 return NotFound();
 
             }
-            Category? category = _db.Categories.Find(id);
+            Category? category = unitOfWork.CategoryRepository.Get(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -92,13 +89,13 @@ namespace ECommerceBookWeb.Controllers
         [HttpPost,ActionName("Delete")]
         public IActionResult DeletePOST(int?id)
         {
-            Category? category = _db.Categories.Find(id);
+            Category? category = unitOfWork.CategoryRepository.Get(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
-            _db.Categories.Remove(category);
-            _db.SaveChanges();
+            unitOfWork.CategoryRepository.Remove(category);
+            unitOfWork.Save();
             TempData["success"] = "Category Deleted successfully";
 
             return RedirectToAction("Index");
