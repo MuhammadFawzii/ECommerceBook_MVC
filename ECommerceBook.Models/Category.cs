@@ -10,7 +10,7 @@ namespace ECommerceBook.Models
         [DisplayName("Category Name")]
         [Required(ErrorMessage = "Category Name is required")]
         [StringLength(30, ErrorMessage = "Category Name cannot exceed 30 characters.")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [DisplayName("Display Order")]
         [Required(ErrorMessage = "Display Order field is required")]
         [Range(1, 100, ErrorMessage = "Display Order must be between 1 and 100.")]

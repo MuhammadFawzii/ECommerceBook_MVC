@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ECommerceBook.DataAccess.Repository.IRepository
 {
-    public interface ICategoryRepository:IRepository<Category>
+    public interface IProductRepository : IRepository<Product>
     {
-        public void Update(Category entity);
+        public void Update(Product entity);
     }
 }
