@@ -15,5 +15,7 @@ namespace ECommerceBook.Models
         [Required(ErrorMessage = "Display Order field is required")]
         [Range(1, 100, ErrorMessage = "Display Order must be between 1 and 100.")]
         public int DisplayOrder { get; set; }
+
+        public List<Product>? Products { get; set; }
     }
 }

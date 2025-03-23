@@ -2,7 +2,8 @@
 using ECommerceBook.DataAccess.Repository.IRepository;
 using ECommerceBook.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ECommerceBook.Models.ViewModels;
 namespace ECommerceBookWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -22,15 +23,24 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
-
-            return View();
+            IEnumerable<SelectListItem> categoryList = unitOfWork.CategoryRepository.GetAll()
+                    ?.Select(i => new SelectListItem(i.Name, i.Id.ToString()))
+                    ?? Enumerable.Empty<SelectListItem>(); // Fallback to empty list if null            
+            //ViewBag.CategoryList = categoryList;
+            //ViewData["CategoryList"] = categoryList;
+            ProductVM productVM = new ProductVM()
+            {
+                Product = new Product(),
+                CategoryList = categoryList
+            };
+            return View(productVM);
         }
         [HttpPost]
-        public IActionResult Create(Product product)
+        public IActionResult Create(ProductVM productVM)
         {
             if (ModelState.IsValid)
             {
-                unitOfWork.ProductRepository.Add(product);
+                unitOfWork.ProductRepository.Add(productVM.Product);
                 unitOfWork.Save();
                 TempData["success"] = "Product Created successfully";
                 return RedirectToAction("Index");

@@ -8,16 +8,15 @@
             </div>
         </div>
     </div>
-    <div class="card-body p-4" style="max-height: 500px; overflow-y: auto;">
+    <div class="card-body p-4" >
         <form method="post">
-            <div class="border-3">
+            <div class="border-3" style="max-height: 500px; overflow-y: auto;">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating py-2 col-12">
                     <input asp-for="Title"  disabled  class="form-control border-0 shadow" disabled />
                     <label asp-for="Title" class="ms-2"></label>
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
-            </div>
             <div class="form-floating py-2 col-12">
                 <textarea asp-for="Description"  disabled  class="form-control border-0 shadow" ></textarea>
                 <label asp-for="Description" class="ms-2"></label>
@@ -53,6 +52,7 @@
                 <input asp-for="Price100"  disabled class="form-control border-0 shadow" />
                 <label asp-for="Price100" class="ms-2"></label>
                 <span asp-validation-for="Price100" class="text-danger"></span>
+            </div>
             </div>
             <div class=" row pt-2">
                 <div class="col-6 col-md-3">

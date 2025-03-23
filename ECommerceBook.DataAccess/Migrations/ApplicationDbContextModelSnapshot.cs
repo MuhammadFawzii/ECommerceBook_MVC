@@ -74,11 +74,17 @@ namespace ECommerceBook.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("ListPrice")
@@ -99,6 +105,8 @@ namespace ECommerceBook.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products");
 
                     b.HasData(
@@ -106,8 +114,10 @@ namespace ECommerceBook.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "John Doe",
+                            CategoryId = 1,
                             Description = "Learn the basics of C# programming.",
                             ISBN = "978-1-234567-89-0",
+                            ImageUrl = "",
                             ListPrice = 49.990000000000002,
                             Price = 45.990000000000002,
                             Price100 = 35.990000000000002,
@@ -118,8 +128,10 @@ namespace ECommerceBook.DataAccess.Migrations
                         {
                             Id = 2,
                             Author = "Jane Smith",
+                            CategoryId = 1,
                             Description = "A guide to ASP.NET Core development.",
                             ISBN = "978-1-234567-89-1",
+                            ImageUrl = "",
                             ListPrice = 59.990000000000002,
                             Price = 55.990000000000002,
                             Price100 = 45.990000000000002,
@@ -130,8 +142,10 @@ namespace ECommerceBook.DataAccess.Migrations
                         {
                             Id = 3,
                             Author = "Mike Brown",
+                            CategoryId = 2,
                             Description = "Master EF Core for database interactions.",
                             ISBN = "978-1-234567-89-2",
+                            ImageUrl = "",
                             ListPrice = 39.990000000000002,
                             Price = 35.990000000000002,
                             Price100 = 25.989999999999998,
@@ -142,8 +156,10 @@ namespace ECommerceBook.DataAccess.Migrations
                         {
                             Id = 4,
                             Author = "Sarah Connor",
+                            CategoryId = 2,
                             Description = "Learn how to build web apps with Blazor.",
                             ISBN = "978-1-234567-89-3",
+                            ImageUrl = "",
                             ListPrice = 69.989999999999995,
                             Price = 65.989999999999995,
                             Price100 = 55.990000000000002,
@@ -154,14 +170,32 @@ namespace ECommerceBook.DataAccess.Migrations
                         {
                             Id = 5,
                             Author = "Robert Martin",
+                            CategoryId = 3,
                             Description = "Building scalable microservices using .NET.",
                             ISBN = "978-1-234567-89-4",
+                            ImageUrl = "",
                             ListPrice = 79.989999999999995,
                             Price = 75.989999999999995,
                             Price100 = 65.989999999999995,
                             Price50 = 70.989999999999995,
                             Title = "Microservices with .NET"
                         });
+                });
+
+            modelBuilder.Entity("ECommerceBook.Models.Product", b =>
+                {
+                    b.HasOne("ECommerceBook.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ECommerceBook.Models.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

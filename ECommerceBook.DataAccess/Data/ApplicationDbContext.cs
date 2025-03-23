@@ -32,7 +32,9 @@ namespace ECommerceBook.DataAcess.Data
                                 ListPrice = 49.99,
                                 Price = 45.99,
                                 Price50 = 40.99,
-                                Price100 = 35.99
+                                Price100 = 35.99,
+                                ImageUrl="",
+                                CategoryId = 1
                             },
                             new Product
                             {
@@ -44,7 +46,9 @@ namespace ECommerceBook.DataAcess.Data
                                 ListPrice = 59.99,
                                 Price = 55.99,
                                 Price50 = 50.99,
-                                Price100 = 45.99
+                                Price100 = 45.99,
+                                ImageUrl="",
+                                CategoryId = 1
                             },
                             new Product
                             {
@@ -56,7 +60,9 @@ namespace ECommerceBook.DataAcess.Data
                                 ListPrice = 39.99,
                                 Price = 35.99,
                                 Price50 = 30.99,
-                                Price100 = 25.99
+                                Price100 = 25.99,
+                                ImageUrl="",
+                                CategoryId = 2
                             },
                             new Product
                             {
@@ -68,7 +74,9 @@ namespace ECommerceBook.DataAcess.Data
                                 ListPrice = 69.99,
                                 Price = 65.99,
                                 Price50 = 60.99,
-                                Price100 = 55.99
+                                Price100 = 55.99,
+                                ImageUrl="",
+                                CategoryId = 2
                             },
                             new Product
                             {
@@ -80,7 +88,9 @@ namespace ECommerceBook.DataAcess.Data
                                 ListPrice = 79.99,
                                 Price = 75.99,
                                 Price50 = 70.99,
-                                Price100 = 65.99
+                                Price100 = 65.99,
+                                ImageUrl="",
+                                CategoryId = 3
                             }
                         );
         }

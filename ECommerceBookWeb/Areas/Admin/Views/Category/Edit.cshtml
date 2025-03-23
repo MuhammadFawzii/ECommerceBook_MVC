@@ -10,7 +10,7 @@
     </div>
     <div class="card-body p-4">
         <form method="post" class="row">
-            <div class="border p-3 mt-4">
+            <div class="border-3" style="max-height: 500px; overflow-y: auto;">
                 <input asp-for="Id" hidden />
                 @* Custom Validation ,ALl,ModeOnly,None *@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -24,6 +24,8 @@
                     <label asp-for="DisplayOrder" class="ms-2"></label>
                     <span asp-validation-for="DisplayOrder" class="text-danger"></span>
                 </div>
+            </div>
+
                 <div class="row mt-3">
                     <div class="col-6 col-md-3">
                         <button type="submit" class="btn btn-primary btn-lg shadow-sm w-100">Update</button>
@@ -35,7 +37,6 @@
                     </div>
                 </div>
 
-            </div>
 
 
 
