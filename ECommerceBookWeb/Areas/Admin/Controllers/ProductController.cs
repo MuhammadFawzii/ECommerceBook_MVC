@@ -11,13 +11,14 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
     {
 
         private IUnitOfWork unitOfWork;
-        public ProductController(IUnitOfWork _unitOfWork) {
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public ProductController(IUnitOfWork _unitOfWork, IWebHostEnvironment _webHostEnvironment) {
             unitOfWork = _unitOfWork;
-
+            webHostEnvironment= _webHostEnvironment;
         }
         public IActionResult Index()
         {
-            IEnumerable<Product> products = unitOfWork.ProductRepository.GetAll();
+            IEnumerable<Product> products = unitOfWork.ProductRepository.GetAll(includeProperties:"Category");
             return View(products);
         }
 
@@ -26,8 +27,7 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
             IEnumerable<SelectListItem> categoryList = unitOfWork.CategoryRepository.GetAll()
                     ?.Select(i => new SelectListItem(i.Name, i.Id.ToString()))
                     ?? Enumerable.Empty<SelectListItem>(); // Fallback to empty list if null            
-            //ViewBag.CategoryList = categoryList;
-            //ViewData["CategoryList"] = categoryList;
+            
             ProductVM productVM = new ProductVM()
             {
                 Product = new Product(),
@@ -36,10 +36,16 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
             return View(productVM);
         }
         [HttpPost]
-        public IActionResult Create(ProductVM productVM)
+        public IActionResult Create(ProductVM productVM,IFormFile? file)
         {
             if (ModelState.IsValid)
             {
+                string wwwRootPath=webHostEnvironment.WebRootPath;
+                if (file!=null)
+                {
+                   productVM.Product.ImageUrl= ProcessUploadedImage(file);
+
+                }
                 unitOfWork.ProductRepository.Add(productVM.Product);
                 unitOfWork.Save();
                 TempData["success"] = "Product Created successfully";
@@ -57,19 +63,34 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
                 return NotFound();
 
             }
-            Product? product = unitOfWork.ProductRepository.Get(c => c.Id == id);
-            if (product == null)
+           
+            IEnumerable<SelectListItem> categoryList = unitOfWork.CategoryRepository.GetAll()
+                   ?.Select(i => new SelectListItem(i.Name, i.Id.ToString()))
+                   ?? Enumerable.Empty<SelectListItem>(); // Fallback to empty list if null            
+
+            ProductVM productVM = new ProductVM()
+            {
+                Product = unitOfWork.ProductRepository.Get(c => c.Id == id),
+                CategoryList = categoryList
+            };
+            if (productVM.Product == null||productVM.CategoryList==null)
             {
                 return NotFound();
             }
-            return View(product);
+            return View(productVM);
         }
         [HttpPost]
-        public IActionResult Edit(Product product)
+        public IActionResult Edit(ProductVM productVM, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
-                unitOfWork.ProductRepository.Update(product);
+                if (file!=null)
+                {
+                  
+                   DeleteOldImage(productVM.Product.ImageUrl);
+                    productVM.Product.ImageUrl= ProcessUploadedImage(file);
+                }
+                unitOfWork.ProductRepository.Update(productVM.Product);
                 unitOfWork.Save();
                 TempData["success"] = "Product Updated successfully";
                 return RedirectToAction("Index");
@@ -99,6 +120,47 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
             unitOfWork.Save();
             TempData["success"] = "Product Deleted successfully";
             return RedirectToAction("Index");
+        }
+
+        private void DeleteOldImage(string? imageUrl)
+        {
+            if (string.IsNullOrEmpty(imageUrl))
+            {
+                return;
+            }
+            try
+            {
+                // Combine with WebRootPath, removing any leading slash from imageUrl
+                string imageIOPath = Path.Combine(webHostEnvironment.WebRootPath,
+                    imageUrl.TrimStart('/', '\\'));
+
+                // Check if file exists and delete it
+                if (System.IO.File.Exists(imageIOPath))
+                {
+                    System.IO.File.Delete(imageIOPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error (in a real application)
+                Console.WriteLine($"Error deleting image: {ex.Message}");
+            }
+        }
+        private string ProcessUploadedImage(IFormFile file)
+        {
+            string wwwRootPath = webHostEnvironment.WebRootPath;
+
+            string imageName = Guid.NewGuid().ToString()+Path.GetExtension(file.FileName);
+            string folderPath = Path.Combine(wwwRootPath, "images", "product");
+            // Ensure the directory exists
+            Directory.CreateDirectory(folderPath);
+            string newImagePath = Path.Combine(folderPath, imageName);
+            using (var fileStream = new FileStream(newImagePath, FileMode.Create))
+            {
+                file.CopyTo(fileStream);
+            }
+            // Use forward slashes and ensure leading slash
+            return Path.Combine("/", "images", "product", imageName).Replace("\\", "/");
         }
     }
 }
