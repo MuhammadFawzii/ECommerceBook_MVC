@@ -162,5 +162,18 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
             // Use forward slashes and ensure leading slash
             return Path.Combine("/", "images", "product", imageName).Replace("\\", "/");
         }
+
+
+
+        #region API Calls
+        [HttpGet]
+        public IActionResult GetAll() {
+            var products = unitOfWork.ProductRepository.GetAll("Category")
+                .Select(p => new { p.Id,p.Title, p.ISBN, p.ListPrice, p.Author, CategoryName = p.Category.Name }).ToList();
+
+
+            return Json(new {data=products});
+        }
+        #endregion
     }
 }
