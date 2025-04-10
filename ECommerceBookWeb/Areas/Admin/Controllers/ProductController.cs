@@ -4,6 +4,7 @@ using ECommerceBook.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ECommerceBook.Models.ViewModels;
+using NuGet.Protocol.Plugins;
 namespace ECommerceBookWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -97,31 +98,21 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
             }
             return View();
         }
+        [HttpDelete]
         public IActionResult Delete(int? id) { 
             Product? product = unitOfWork.ProductRepository.Get(c=>c.Id == id);
             if (product == null)
             {
-                TempData["error"] = "Product not found";
-                return RedirectToAction("Index");
+                return Json(new { success = false, message = "Error while deleting" });
             }
-            return View(product);
-        }
-        [HttpPost]
-        [ActionName("Delete")]
-        public IActionResult DeletePost(int? id)
-        {
-            Product? product = unitOfWork.ProductRepository.Get(c => c.Id == id);
-            if (product == null)
-            {
-                TempData["error"] = "Product not found";
-                return RedirectToAction("Index");
-            }
+            DeleteOldImage(product.ImageUrl);
             unitOfWork.ProductRepository.Remove(product);
             unitOfWork.Save();
-            TempData["success"] = "Product Deleted successfully";
-            return RedirectToAction("Index");
-        }
 
+            return Json(new { success = true, message = "Delete Successful" });
+
+        }
+       
         private void DeleteOldImage(string? imageUrl)
         {
             if (string.IsNullOrEmpty(imageUrl))
