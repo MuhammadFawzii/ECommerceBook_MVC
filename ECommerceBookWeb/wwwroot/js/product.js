@@ -2,9 +2,14 @@
 $(document).ready(function () {
     loadDataTable();
 });
+
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
-        "ajax": { url: '/admin/product/getall' },
+        "ajax": {
+            url: '/admin/product/getall',
+            dataSrc: 'data'
+        },
+       
         "columns": [
             { data: 'title', "width": "25%" },
             { data: 'isbn', "width": "15%" },
@@ -21,8 +26,7 @@ function loadDataTable() {
                     
                 }, "width": "35%"
             }
-        ],
-        
+        ]
     });
 }
 function Delete(url) {

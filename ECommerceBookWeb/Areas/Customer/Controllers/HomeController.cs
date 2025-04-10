@@ -1,6 +1,7 @@
-using System.Diagnostics;
+using ECommerceBook.DataAccess.Repository.IRepository;
 using ECommerceBook.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace ECommerceBookWeb.Areas.Customer.Controllers
 {
@@ -8,15 +9,19 @@ namespace ECommerceBookWeb.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IUnitOfWork unitOfWork;
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork _unitOfWork)
         {
             _logger = logger;
+            this.unitOfWork = _unitOfWork;
+
         }
 
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<Product> products = unitOfWork.ProductRepository.GetAll(includeProperties: "Category");
+
+            return View(products);
         }
 
         public IActionResult Privacy()
