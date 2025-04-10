@@ -1,9 +1,8 @@
-﻿using ECommerceBook.DataAccess.Repository;
-using ECommerceBook.DataAccess.Repository.IRepository;
+﻿using ECommerceBook.DataAccess.Repository.IRepository;
 using ECommerceBook.Models;
+using ECommerceBook.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ECommerceBook.Models.ViewModels;
 namespace ECommerceBookWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -12,13 +11,14 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
 
         private IUnitOfWork unitOfWork;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public ProductController(IUnitOfWork _unitOfWork, IWebHostEnvironment _webHostEnvironment) {
+        public ProductController(IUnitOfWork _unitOfWork, IWebHostEnvironment _webHostEnvironment)
+        {
             unitOfWork = _unitOfWork;
             webHostEnvironment= _webHostEnvironment;
         }
         public IActionResult Index()
         {
-            IEnumerable<Product> products = unitOfWork.ProductRepository.GetAll(includeProperties:"Category");
+            IEnumerable<Product> products = unitOfWork.ProductRepository.GetAll(includeProperties: "Category");
             return View(products);
         }
 
@@ -27,7 +27,7 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
             IEnumerable<SelectListItem> categoryList = unitOfWork.CategoryRepository.GetAll()
                     ?.Select(i => new SelectListItem(i.Name, i.Id.ToString()))
                     ?? Enumerable.Empty<SelectListItem>(); // Fallback to empty list if null            
-            
+
             ProductVM productVM = new ProductVM()
             {
                 Product = new Product(),
@@ -36,14 +36,14 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
             return View(productVM);
         }
         [HttpPost]
-        public IActionResult Create(ProductVM productVM,IFormFile? file)
+        public IActionResult Create(ProductVM productVM, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
-                string wwwRootPath=webHostEnvironment.WebRootPath;
+                string wwwRootPath = webHostEnvironment.WebRootPath;
                 if (file!=null)
                 {
-                   productVM.Product.ImageUrl= ProcessUploadedImage(file);
+                    productVM.Product.ImageUrl= ProcessUploadedImage(file);
 
                 }
                 unitOfWork.ProductRepository.Add(productVM.Product);
@@ -63,7 +63,7 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
                 return NotFound();
 
             }
-           
+
             IEnumerable<SelectListItem> categoryList = unitOfWork.CategoryRepository.GetAll()
                    ?.Select(i => new SelectListItem(i.Name, i.Id.ToString()))
                    ?? Enumerable.Empty<SelectListItem>(); // Fallback to empty list if null            
@@ -86,8 +86,8 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
             {
                 if (file!=null)
                 {
-                  
-                   DeleteOldImage(productVM.Product.ImageUrl);
+
+                    DeleteOldImage(productVM.Product.ImageUrl);
                     productVM.Product.ImageUrl= ProcessUploadedImage(file);
                 }
                 unitOfWork.ProductRepository.Update(productVM.Product);
@@ -97,8 +97,9 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
             }
             return View();
         }
-        public IActionResult Delete(int? id) { 
-            Product? product = unitOfWork.ProductRepository.Get(c=>c.Id == id);
+        public IActionResult Delete(int? id)
+        {
+            Product? product = unitOfWork.ProductRepository.Get(c => c.Id == id);
             if (product == null)
             {
                 TempData["error"] = "Product not found";
@@ -166,14 +167,24 @@ namespace ECommerceBookWeb.Areas.Admin.Controllers
 
 
         #region API Calls
+
         [HttpGet]
-        public IActionResult GetAll() {
-            var products = unitOfWork.ProductRepository.GetAll("Category")
-                .Select(p => new { p.Id,p.Title, p.ISBN, p.ListPrice, p.Author, CategoryName = p.Category.Name }).ToList();
+        public IActionResult GetAll()
+        {
+            var products = unitOfWork.ProductRepository.GetAll(includeProperties: "Category")
+                .Select(p => new
+                {
+                    id = p.Id,
+                    title = p.Title,
+                    isbn = p.ISBN,
+                    listPrice = p.ListPrice,
+                    author = p.Author,
+                    categoryName = p.Category.Name
+                }).ToList();
 
-
-            return Json(new {data=products});
+            return Json(new { data = products });
         }
         #endregion
+
     }
 }

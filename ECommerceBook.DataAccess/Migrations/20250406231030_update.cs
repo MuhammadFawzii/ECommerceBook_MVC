@@ -7,7 +7,7 @@
 namespace ECommerceBook.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateDBFromFirst : Migration
+    public partial class update : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
