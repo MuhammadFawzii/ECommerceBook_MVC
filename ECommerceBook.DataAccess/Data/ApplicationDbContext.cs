@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceBook.DataAcess.Data
 {
-    public class ApplicationDbContext:DbContext
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<Category> Categories { get; set; }
@@ -22,76 +22,90 @@ namespace ECommerceBook.DataAcess.Data
                 );
 
             modelBuilder.Entity<Product>().HasData(
-                            new Product
-                            {
-                                Id=1,
-                                Title = "C# Fundamentals",
-                                Description = "Learn the basics of C# programming.",
-                                ISBN = "978-1-234567-89-0",
-                                Author = "John Doe",
-                                ListPrice = 49.99,
-                                Price = 45.99,
-                                Price50 = 40.99,
-                                Price100 = 35.99,
-                                ImageUrl="",
-                                CategoryId = 1
-                            },
-                            new Product
-                            {
-                                Id=2,
-                                Title = "ASP.NET Core Essentials",
-                                Description = "A guide to ASP.NET Core development.",
-                                ISBN = "978-1-234567-89-1",
-                                Author = "Jane Smith",
-                                ListPrice = 59.99,
-                                Price = 55.99,
-                                Price50 = 50.99,
-                                Price100 = 45.99,
-                                ImageUrl="",
-                                CategoryId = 1
-                            },
-                            new Product
-                            {
-                                Id = 3,
-                                Title = "Entity Framework Core in Action",
-                                Description = "Master EF Core for database interactions.",
-                                ISBN = "978-1-234567-89-2",
-                                Author = "Mike Brown",
-                                ListPrice = 39.99,
-                                Price = 35.99,
-                                Price50 = 30.99,
-                                Price100 = 25.99,
-                                ImageUrl="",
-                                CategoryId = 2
-                            },
-                            new Product
-                            {
-                                Id = 4,
-                                Title = "Blazor WebAssembly Unleashed",
-                                Description = "Learn how to build web apps with Blazor.",
-                                ISBN = "978-1-234567-89-3",
-                                Author = "Sarah Connor",
-                                ListPrice = 69.99,
-                                Price = 65.99,
-                                Price50 = 60.99,
-                                Price100 = 55.99,
-                                ImageUrl="",
-                                CategoryId = 2
-                            },
-                            new Product
-                            {
-                                Id = 5,
-                                Title = "Microservices with .NET",
-                                Description = "Building scalable microservices using .NET.",
-                                ISBN = "978-1-234567-89-4",
-                                Author = "Robert Martin",
-                                ListPrice = 79.99,
-                                Price = 75.99,
-                                Price50 = 70.99,
-                                Price100 = 65.99,
-                                ImageUrl="",
-                                CategoryId = 3
-                            }
+                new Product
+                {
+                    Id = 1,
+                    Title = "Fortune of Time",
+                    Author="Billy Spark",
+                    Description= "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    ISBN="SWD9999001",
+                    ListPrice=99,
+                    Price=90,
+                    Price50=85,
+                    Price100=80,
+                    ImageUrl="",
+                    CategoryId = 2
+                },
+                new Product
+                {
+                    Id = 2,
+                    Title = "Dark Skies",
+                    Author = "Nancy Hoover",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    ISBN = "CAW777777701",
+                    ListPrice = 40,
+                    Price = 30,
+                    Price50 = 25,
+                    Price100 = 20,
+                    ImageUrl="",
+                    CategoryId = 1
+                },
+                new Product
+                {
+                    Id = 3,
+                    Title = "Vanish in the Sunset",
+                    Author = "Julian Button",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    ISBN = "RITO5555501",
+                    ListPrice = 55,
+                    Price = 50,
+                    Price50 = 40,
+                    Price100 = 35,
+                    ImageUrl="",
+                    CategoryId = 1
+                },
+                new Product
+                {
+                    Id = 4,
+                    Title = "Cotton Candy",
+                    Author = "Abby Muscles",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    ISBN = "WS3333333301",
+                    ListPrice = 70,
+                    Price = 65,
+                    Price50 = 60,
+                    Price100 = 55,
+                    ImageUrl="",
+                    CategoryId = 2
+                },
+                new Product
+                {
+                    Id = 5,
+                    Title = "Rock in the Ocean",
+                    Author = "Ron Parker",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    ISBN = "SOTJ1111111101",
+                    ListPrice = 30,
+                    Price = 27,
+                    Price50 = 25,
+                    Price100 = 20,
+                    ImageUrl="",
+                    CategoryId = 3
+                },
+                new Product
+                {
+                    Id = 6,
+                    Title = "Leaves and Wonders",
+                    Author = "Laura Phantom",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    ISBN = "FOT000000001",
+                    ListPrice = 25,
+                    Price = 23,
+                    Price50 = 22,
+                    Price100 = 20,
+                    ImageUrl="",
+                    CategoryId = 3
+                }
                         );
         }
     }

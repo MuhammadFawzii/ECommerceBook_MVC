@@ -23,6 +23,12 @@ namespace ECommerceBookWeb.Areas.Customer.Controllers
 
             return View(products);
         }
+        public IActionResult Details(int productId)
+        {
+            Product product=unitOfWork.ProductRepository.Get(p=>p.Id==productId, includeProperties: "Category");
+            return View(product);
+
+        }
 
         public IActionResult Privacy()
         {
