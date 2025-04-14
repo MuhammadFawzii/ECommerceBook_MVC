@@ -1,16 +1,20 @@
 ﻿using ECommerceBook.Models;
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceBook.DataAcess.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
                 new Category { Id = 2, Name = "Scifi", DisplayOrder = 2 },
@@ -20,7 +24,6 @@ namespace ECommerceBook.DataAcess.Data
 
 
                 );
-
             modelBuilder.Entity<Product>().HasData(
                 new Product
                 {
@@ -107,6 +110,49 @@ namespace ECommerceBook.DataAcess.Data
                     CategoryId = 3
                 }
                         );
+            modelBuilder.Entity<Company>().HasData(
+                new Company
+                {
+                    Id = 1,
+                    Name = "ABC Bookstore",
+                    StreetAddress = "123 Main St",
+                    City = "New York",
+                    State = "NY",
+                    PostalCode = "10001",
+                    PhoneNumber = "01271372012"
+                },
+                new Company
+                {
+                    Id = 2,
+                    Name = "XYZ Bookstore",
+                    StreetAddress = "456 Elm St",
+                    City = "Los Angeles",
+                    State = "CA",
+                    PostalCode = "90001",
+                    PhoneNumber = "01271372012"
+                },
+                new Company
+                {
+                    Id = 3,
+                    Name = "LMN Bookstore",
+                    StreetAddress = "789 Oak St",
+                    City = "Chicago",
+                    State = "IL",
+                    PostalCode = "60601",
+                    PhoneNumber = "01271372012"
+                },
+                new Company
+                {
+                    Id = 4,
+                    Name = "PQR Bookstore",
+                    StreetAddress = "101 Pine St",
+                    City = "Houston",
+                    State = "TX",
+                    PostalCode = "77001",
+                    PhoneNumber = "01271372012"
+                }
+
+                );
         }
     }
 }

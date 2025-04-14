@@ -9,7 +9,8 @@ namespace ECommerceBook.DataAccess.Repository.IRepository
     public interface IUnitOfWork
     {
         ICategoryRepository CategoryRepository { get; }
-        IProductRepository ProductRepository { get; }  
+        IProductRepository ProductRepository { get; }
+        ICompanyRepository CompanyRepository { get; }
 
         public void Save();
 

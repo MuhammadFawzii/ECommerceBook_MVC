@@ -3,6 +3,11 @@ using ECommerceBook.DataAccess.Repository.IRepository;
 using ECommerceBook.DataAccess.Repository;
 using ECommerceBook.DataAcess.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using ECommerceBook.Utility;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +19,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 });
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders(); builder.Services.AddRazorPages();
+builder.Services.ConfigureApplicationCookie(A=>{
+    A.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+    A.LoginPath=$"/Identity/Account/Login";
+    A.LogoutPath=$"/Identity/Account/Logout";
+
+
+
+
+});
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
@@ -34,11 +50,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
-
 app.Run();

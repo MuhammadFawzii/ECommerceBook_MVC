@@ -2,9 +2,12 @@
 using ECommerceBook.Models;
 using Microsoft.AspNetCore.Mvc;
 using ECommerceBook.DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
+using ECommerceBook.Utility;
 namespace ECommerceBookWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork unitOfWork;

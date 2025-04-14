@@ -13,13 +13,14 @@ namespace ECommerceBook.DataAccess.Repository
         private ApplicationDbContext db;
         public ICategoryRepository CategoryRepository { get; private set; }
         public IProductRepository ProductRepository { get; private set; }
-
+        public ICompanyRepository CompanyRepository { get; private set; }
 
         public UnitOfWork(ApplicationDbContext _db) 
         {
             db = _db;
             CategoryRepository = new CategoryRepository(_db);
             ProductRepository = new ProductRepository(_db);
+            CompanyRepository = new CompanyRepository(_db);
         }
 
 

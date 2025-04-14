@@ -5,9 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ECommerceBook.Models.ViewModels;
 using NuGet.Protocol.Plugins;
+using ECommerceBook.Utility;
+using Microsoft.AspNetCore.Authorization;
 namespace ECommerceBookWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
+
     public class ProductController : Controller
     {
 
