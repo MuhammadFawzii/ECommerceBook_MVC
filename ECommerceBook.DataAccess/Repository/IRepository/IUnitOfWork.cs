@@ -12,6 +12,8 @@ namespace ECommerceBook.DataAccess.Repository.IRepository
         IProductRepository ProductRepository { get; }
         ICompanyRepository CompanyRepository { get; }
         IShoppingCartRepository ShoppingCartRepository { get; }
+        IOrderHeaderRepository OrderHeaderRepository { get; }
+        IOrderDetailRepository OrderDetailRepository { get; }
         IApplicationUserRepository ApplicationUserRepository { get; }
         public void Save();
 

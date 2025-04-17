@@ -17,6 +17,8 @@
 
     <!-- TinyMCE -->
     <script src="https://cdn.tiny.cloud/1/awp3fkp0d5a5cau21jwob5ofnqu7dwqnx1chzhqrxgo6kywm/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    @await RenderSectionAsync("Styles", required: false)
+
 </head>
 <body>
     <header>
@@ -53,7 +55,7 @@
                         }
              
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="Customer" asp-controller="CartCar" asp-action="Index">
+                            <a class="nav-link text-light" asp-area="Customer" asp-controller="Cart" asp-action="Index">
                                 <i class="bi bi-cart"></i> &nbsp;</a>
 
                         </li>

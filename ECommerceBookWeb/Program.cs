@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using ECommerceBook.Utility;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,16 +19,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 });
+builder.Services.Configure<StripeSetting>(builder.Configuration.GetSection("Stripe"));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders(); builder.Services.AddRazorPages();
 builder.Services.ConfigureApplicationCookie(A=>{
     A.AccessDeniedPath = $"/Identity/Account/AccessDenied";
     A.LoginPath=$"/Identity/Account/Login";
     A.LogoutPath=$"/Identity/Account/Logout";
-
-
-
-
 });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
@@ -48,12 +46,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+StripeConfiguration.ApiKey= builder.Configuration.GetSection("Stripe")["SecretKey"];
 
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");

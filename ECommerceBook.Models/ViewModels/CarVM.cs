@@ -9,6 +9,7 @@ namespace ECommerceBook.Models.ViewModels
     public class CarVM
     {
         public IEnumerable<ShoppingCart> ShoppingListCart { get; set; }
-        public double OrderTotal { get; set; }
+
+        public OrderHeader OrderHeader { get; set; }
     }
 }

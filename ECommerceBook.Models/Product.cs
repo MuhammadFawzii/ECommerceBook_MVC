@@ -30,22 +30,22 @@ namespace ECommerceBook.Models
         [Required(ErrorMessage = "List Price is required")]
         [Range(1, 1000, ErrorMessage = "List Price must be between 1 and 1000.")]
         [Display(Name = "List Price")]
-        public double? ListPrice { get; set; }
+        public double ListPrice { get; set; }
 
         [Required(ErrorMessage = "Price for 1-50 is required")]
         [Range(1, 1000, ErrorMessage = "Price for 1-50 must be between 1 and 1000.")]
         [Display(Name = "Price for 1-50")]
-        public double? Price { get; set; }
+        public double Price { get; set; }
 
         [Required(ErrorMessage = "Price for 50+ is required")]
         [Range(1, 1000, ErrorMessage = "Price for 50+ must be between 1 and 1000.")]
         [Display(Name = "Price for 50+")]
-        public double? Price50 { get; set; }
+        public double Price50 { get; set; }
 
         [Required(ErrorMessage = "Price for 100+ is required")]
         [Range(1, 1000, ErrorMessage = "Price for 100+ must be between 1 and 1000.")]
         [Display(Name = "Price for 100+")]
-        public double? Price100 { get; set; }
+        public double Price100 { get; set; }
 
         public string? ImageUrl { get; set; }
         public int CategoryId { get; set; }

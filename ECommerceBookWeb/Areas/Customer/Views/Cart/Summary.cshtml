@@ -1,0 +1,132 @@
+﻿@model CarVM
+<form method="post">
+    <div class="container py-4">
+        <div class="card shadow border-0">
+            <!-- Header Section -->
+            <div class="card-header bg-primary bg-gradient text-light py-3">
+                <div class="row align-items-center px-4">
+                    <div class="col-md-6">
+                        <h4 class="mb-0 text-white">Complete Your Order</h4>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <a href="/Cart" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-arrow-left me-1"></i>Back to Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body p-4">
+                <div class="row">
+                    <!-- Shipping Details Section -->
+                    <div class="col-lg-7 pe-lg-5">
+                        <h5 class="d-flex align-items-center mb-4 text-primary">
+                            <i class="bi bi-truck me-2"></i>
+                            <span>Shipping Details</span>
+                        </h5>
+
+                        <div class="row g-3">
+                            <!-- Contact Information -->
+                            <div class="col-md-6">
+                                <label asp-for="OrderHeader.Name" class="form-label fw-semibold">Full Name</label>
+                                <input asp-for="OrderHeader.Name" class="form-control" placeholder="John Doe" required />
+                                <span asp-validation-for="OrderHeader.Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="OrderHeader.PhoneNumber" class="form-label fw-semibold">Phone Number</label>
+                                <input asp-for="OrderHeader.PhoneNumber" class="form-control" placeholder="(555) 123-4567" required />
+                                <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <!-- Address Information -->
+                            <div class="col-12">
+                                <label asp-for="OrderHeader.StreetAddress" class="form-label fw-semibold">Street Address</label>
+                                <input asp-for="OrderHeader.StreetAddress" class="form-control" placeholder="123 Main St" required />
+                                <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-5">
+                                <label asp-for="OrderHeader.City" class="form-label fw-semibold">City</label>
+                                <input asp-for="OrderHeader.City" class="form-control" placeholder="New York" required />
+                                <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="OrderHeader.State" class="form-label fw-semibold">State</label>
+                                <input asp-for="OrderHeader.State" class="form-control" placeholder="NY" required />
+                                <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label asp-for="OrderHeader.PostalCode" class="form-label fw-semibold">Postal Code</label>
+                                <input asp-for="OrderHeader.PostalCode" class="form-control" placeholder="10001" required />
+                                <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary Section -->
+                    <div class="col-lg-5 mt-4 mt-lg-0">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+                                <h5 class="d-flex align-items-center mb-4 text-primary">
+                                    <i class="bi bi-cart-check me-2"></i>
+                                    <span>Order Summary</span>
+                                </h5>
+
+                                <div class="order-items mb-3">
+                                    @foreach (var item in Model.ShoppingListCart)
+                                    {
+                                        <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                                            <div>
+                                                <h6 class="mb-1 fw-semibold">@item.Product.Title</h6>
+                                                <span class="text-muted small">Quantity: @item.Count</span>
+                                            </div>
+                                            <span class="fw-semibold">$@(item.Count * item.Price).00</span>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center fw-bold">
+                                    <span class="text-dark">Total Amount</span>
+                                    <span class="text-primary fs-5">$@Model.OrderHeader.OrderTotal.00</span>
+                                </div>
+
+                                <div class="delivery-info mt-4 py-3 border-top">
+                                    <div class="d-flex align-items-center text-success mb-2">
+                                        <i class="bi bi-calendar-check me-2"></i>
+                                        <span class="fw-semibold">Estimated Delivery</span>
+                                    </div>
+                                    <p class="mb-0 text-muted">
+                                        @DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Section -->
+            <div class="card-footer bg-white py-4">
+                <div class="row align-items-center">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-shield-check text-success fs-4 me-2"></i>
+                            <span class="text-muted">Secure checkout powered by <span class="fw-semibold">PaymentProvider</span></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold">
+                            <i class="bi bi-credit-card me-2"></i>Complete Purchase
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<partial name="_ValidationScriptsPartial" />
